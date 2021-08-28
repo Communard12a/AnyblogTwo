@@ -1,0 +1,15 @@
+css
+fonts
+icons-reference
+img
+js
+vendor
+credits.txt
+license.txt
+readme.txt
+env_2
+manage.py
+db.sqlite3
+wsgi.py
+__pycache__
+__init__.py
