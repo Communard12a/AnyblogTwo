@@ -13,3 +13,7 @@ db.sqlite3
 wsgi.py
 __pycache__
 __init__.py
+migrations
+tests.py
+apps.py
+media_root
