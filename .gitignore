@@ -6,7 +6,6 @@ js
 vendor
 credits.txt
 license.txt
-readme.txt
 env_2
 manage.py
 db.sqlite3
