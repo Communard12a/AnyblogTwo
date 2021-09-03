@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model # default model user
-
+from django.urls import reverse 
 
 User = get_user_model() # почему с большой буквы, что это? Our user is equal to default model user
 
@@ -22,6 +22,7 @@ class Post(models.Model):
     overview = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     comment_count = models.IntegerField(default=0)
+    view_count = models.IntegerField(default=0)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField()
     categories = models.ManyToManyField(Category) #сразу мн.число у переменной; у многих постов могут быть много категорий
@@ -29,3 +30,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={
+            'id': self.id
+        })
