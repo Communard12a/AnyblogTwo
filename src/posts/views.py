@@ -1,6 +1,6 @@
 from django.db.models import Count, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post
 from marketing.models import Signup
 
@@ -21,9 +21,9 @@ def search(request):
 
 
 def get_category_count():
-    queryset = Post.objects\
-        .values ('categories__title')\
-        .annotate(Count('categories__title'))
+    queryset = Post.objects.values ('categories__title').annotate(Count('categories__title'))
+    # another option, recommended in comments: 
+    #queryset =Post.objects.values('categories__title').annotate(Count('categories'))
     return queryset
 
 def index(request):
@@ -65,4 +65,8 @@ def blog(request):
     return render(request, 'blog.html', context)
 
 def post(request, id):
-    return render(request, 'post.html', {})
+    post = get_object_or_404(Post, id=id)
+    context = {
+        'post': post
+    }
+    return render(request, 'post.html', context)
