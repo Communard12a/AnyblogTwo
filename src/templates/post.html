@@ -19,8 +19,8 @@
                   {% endfor %}                  
                   </div>
                   <div>
-                    <a href="">Update</a>
-                    <a href="">Delete</a>
+                    <a href="{% url 'post-update' id=post.id %}">Update</a><!--Никогда в таких ссылках на страницу не делай нижнее подчёркивание! -->
+                    <!--a href="{% url 'post-delete' id=post.id %}">Delete</a--><!--Никогда в таких ссылках на страницу не делай нижнее подчёркивание! -->
                     
                   </div>
                 </div>

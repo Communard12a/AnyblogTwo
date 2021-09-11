@@ -77,6 +77,7 @@ def post(request, id):
         if form.is_valid():
             form.instance.user = request.user
             form.instance.post = post
+            #form.instance.post_id = post.id #(рекомендовано комментатором, если редактированный пост появляется в секции комментарии)
             form.save()
             return redirect(reverse("post-detail", kwargs={
                 'id': post.pk
@@ -90,6 +91,7 @@ def post(request, id):
     return render(request, 'post.html', context)
 
 def post_create(request):
+    title = 'Create'
     form = PostForm(request.POST or None, request.FILES or None)
     author = get_author (request.user)
     if request.method == "POST":
@@ -100,15 +102,33 @@ def post_create(request):
                 'id': form.instance.id
             }))
     context= {
+        'title': title,
         'form': form
     }
     return render(request, "post_create.html", context)
 
-    
 
 def post_update(request, id):
-    pass
+    title = 'Update'
+    post = get_object_or_404(Post, id=id)
+    form = PostForm(request.POST or None, request.FILES or None, instance=post)
+    author = get_author(request.user)
+    if request.method == "POST":
+        if form.is_valid():
+            form.instance.author = author
+            form.save()
+            return redirect(reverse("post-detail", kwargs={
+                'id': form.instance.id
+            }))
+    context= {
+        'title': title,
+        'form': form
+    }
+    return render(request, "post_create.html", context)
     
 def post_delete(request, id):
-    pass
+    post = get_object_or_404(Post, id=id)
+    post.delete()
+    return redirect(reverse("post-list"))
+
 

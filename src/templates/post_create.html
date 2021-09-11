@@ -4,9 +4,11 @@
 
 {% block content %}
 
-<div class="col-4 offset-4 mb-5 mt-5">
+<!--div class="col-4 offset-4 mb-5 mt-5"--><!--авторский вариант-->
+<div class="offset-3 mb-5 mt-5 d-flex justify-content-between align-items-center"><h3>{{ title }} an article</h3></div>
+<div class="offset-3 mb-5 mt-5 d-flex justify-content-between align-items-center"> <!-- мой вариант -->
 
-<h3>Create a post</h3><br/>
+<!--h3>Create a post</h3><br/-->
 {{ form.media }}
 <form method="POST" action="." enctype="multipart/form-data">
     {% csrf_token %}
