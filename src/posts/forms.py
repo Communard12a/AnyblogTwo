@@ -1,6 +1,6 @@
 from django import forms
 from tinymce import TinyMCE
-from .models import Post, Comment
+from .models import Post, Comment, NewComment
 
 
 class TinyMCEWidget(TinyMCE):
@@ -30,3 +30,13 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('content', )
+
+class NewCommentForm(forms.ModelForm):
+    class Meta:
+        model = NewComment
+        fields = ("name", "email", "body")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "col-sm-12", "placeholder": "Type your name"}),
+            "email": forms.TextInput(attrs={"class": "col-sm-12", "placeholder": "Type your email"}),
+            "body": forms.Textarea(attrs={"class": "form-control", "rows": "4", "placeholder": "Type your comment",})
+        }

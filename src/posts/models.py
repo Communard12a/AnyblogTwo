@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth import get_user_model # default model user
 from django.urls import reverse 
 
-
 User = get_user_model() # почему с большой буквы, что это? Our user is equal to default model user
 class PostView(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -20,6 +19,21 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class NewComment(models.Model):
+    post = models.ForeignKey('Post', related_name='new_comments', on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    body = models.TextField()
+    publish = models.DateTimeField(auto_now_add=True)
+    #status = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("-publish",)
+
+    def __str__(self):
+        return f"by {self.name} to post: '{self.post}'"
+
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField()
@@ -38,8 +52,8 @@ class Post(models.Model):
     overview = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     content = HTMLField()
-    #comment_count = models.IntegerField(default=0)
-    #view_count = models.IntegerField(default=0) 
+    comment_count = models.IntegerField(default=0)
+    view_count = models.IntegerField(default=0) 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField()
     categories = models.ManyToManyField(Category) #сразу мн.число у переменной; у многих постов могут быть много категорий

@@ -2,7 +2,7 @@ from django.db.models import Count, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from .models import Post, Author, PostView
-from .forms import CommentForm, PostForm
+from .forms import CommentForm, PostForm, NewCommentForm
 from marketing.models import Signup
 
 def get_author(user):
@@ -72,21 +72,31 @@ def post(request, id):
     category_count = get_category_count()
     most_recent = Post.objects.order_by('-timestamp')[:3]
     post = get_object_or_404(Post, id=id)
-
-    PostView.objects.get_or_create(user=request.user, post=post)
-    form = CommentForm(request.POST or None)
+    comments = post.new_comments.filter() # все существующие у данного поста комменты без фильтра "активных" постов как у Zander'а
+    user_comment = None # новый коммент от пользователя - пока пустой
+    #PostView.objects.get_or_create(user=request.user, post=post)
+    
     if request.method == "POST":
-        if form.is_valid():
-            form.instance.user = request.user
-            form.instance.post = post
+        comment_form = NewCommentForm(request.POST or None) # заполненная форма после нажатия кнопки "сохранить"
+        if comment_form.is_valid():
+            user_comment = comment_form.save(commit=False) # запомнить, но не сохранить текст комментария
+            user_comment.post = post # Связываем текущий пост с данным комментарием
+            user_comment.save() # сохраняем комментарий в базе
+            #form.instance.user = request.user
+            #form.instance.post = post
             #form.instance.post_id = post.id #(рекомендовано комментатором, если редактированный пост появляется в секции комментарии)
-            form.save()
+            #form.save()
             return redirect(reverse("post-detail", kwargs={
                 'id': post.pk
             }))
+    else:
+        comment_form = NewCommentForm()
     context = {
-        'form': form,
+        #'form': comment_form,
         'post': post,
+        'comments': user_comment,
+        'comments': comments,
+        'comment_form': comment_form,
         'most_recent': most_recent,
         'category_count': category_count
     }
@@ -134,3 +144,4 @@ def post_delete(request, id):
     return redirect(reverse("post-list"))
 
 
+    
