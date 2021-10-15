@@ -53,7 +53,8 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = HTMLField()
     comment_count = models.IntegerField(default=0)
-    view_count = models.IntegerField(default=0) 
+    #view_count = models.IntegerField(default=0) 
+    views_count = models.IntegerField(default=0) 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField()
     categories = models.ManyToManyField(Category) #сразу мн.число у переменной; у многих постов могут быть много категорий

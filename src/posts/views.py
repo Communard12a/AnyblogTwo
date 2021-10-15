@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from .models import Post, Author, PostView
 from .forms import CommentForm, PostForm, NewCommentForm
 from marketing.models import Signup
+import time
 
 def get_author(user):
     qs = Author.objects.filter(user=user)
@@ -72,9 +73,13 @@ def post(request, id):
     category_count = get_category_count()
     most_recent = Post.objects.order_by('-timestamp')[:3]
     post = get_object_or_404(Post, id=id)
+    post.views_count = post.views_count + 1
+    post.save()
+    time.sleep(5)
+
     comments = post.new_comments.filter() # все существующие у данного поста комменты без фильтра "активных" постов как у Zander'а
     user_comment = None # новый коммент от пользователя - пока пустой
-    #PostView.objects.get_or_create(user=request.user, post=post)
+    #PostView.objects.get_or_create(user=request.user, post=post) # это для подсчёта количества просмотров, который работает торлько с зарегистрированными пользователями
     
     if request.method == "POST":
         comment_form = NewCommentForm(request.POST or None) # заполненная форма после нажатия кнопки "сохранить"
@@ -98,7 +103,8 @@ def post(request, id):
         'comments': comments,
         'comment_form': comment_form,
         'most_recent': most_recent,
-        'category_count': category_count
+        'category_count': category_count,
+        
     }
     return render(request, 'post.html', context)
 
