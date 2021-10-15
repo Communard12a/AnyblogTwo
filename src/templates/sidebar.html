@@ -24,8 +24,10 @@
                   <div class="image"><img src="{{ post.thumbnail.url }}" alt="..." class="img-fluid"></div>
                   <div class="title"><strong>{{ post.title }}</strong>
                     <div class="d-flex align-items-center">
-                      <div class="views"><i class="icon-eye"></i>{{ post.view_count }}</div>
-                      <div class="comments"><i class="icon-comment"></i>{{ post.comment_count }}</div>
+                      <div class="views"><i class="icon-eye"></i>{{ post.views_count }}</div>
+                      {% with comments.count as total_comments %}       
+                      <div class="comments meta-last"><i class="icon-comment"></i>{{ total_comments }}</div>
+                      {% endwith %}
                     </div>
                   </div>
                 </div>
