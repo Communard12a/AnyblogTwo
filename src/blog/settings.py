@@ -37,10 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    # ThirdPartyApps
     'crispy_forms',
     'tinymce',
-
+    # LocalApps
     'posts',
     'marketing',
 ]

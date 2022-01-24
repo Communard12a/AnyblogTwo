@@ -2,6 +2,7 @@ from tinymce import HTMLField
 from django.db import models
 from django.contrib.auth import get_user_model # default model user
 from django.urls import reverse 
+from django.utils import timezone
 
 User = get_user_model() # почему с большой буквы, что это? Our user is equal to default model user
 class PostView(models.Model):
@@ -53,7 +54,7 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = HTMLField()
     comment_count = models.IntegerField(default=0)
-    #view_count = models.IntegerField(default=0) 
+    publish = models.DateTimeField(default=timezone.now)
     views_count = models.IntegerField(default=0) 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField()

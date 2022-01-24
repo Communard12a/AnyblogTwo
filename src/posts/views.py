@@ -75,7 +75,7 @@ def post(request, id):
     post = get_object_or_404(Post, id=id)
     post.views_count = post.views_count + 1
     post.save()
-    time.sleep(5)
+    time.sleep(1)
 
     comments = post.new_comments.filter() # все существующие у данного поста комменты без фильтра "активных" постов как у Zander'а
     user_comment = None # новый коммент от пользователя - пока пустой

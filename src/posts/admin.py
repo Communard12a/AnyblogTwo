@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Author, Category, Post, Comment, PostView, NewComment
+from .models import Author, Category, Post, Comment, PostView, NewComment 
 
 admin.site.register(Author)
 admin.site.register(Category)
